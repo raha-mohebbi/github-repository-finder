@@ -22,6 +22,13 @@ async function getRepositories(searchTerm) {
     topTen.forEach((repo, index) => {
       console.log(`${index + 1}. ${repo.full_name}`);
       console.log(`⭐ ${repo.stargazers_count}`);
+      if (repo.description === null) {
+        console.log(`📝 No description available`);
+      } else {
+        console.log(`📝 ${repo.description}`);
+      }
+
+      console.log(`💻 ${repo.language}`);
       console.log(repo.html_url);
       console.log("----------------");
     });
