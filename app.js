@@ -10,13 +10,16 @@ async function getRepositories(searchTerm) {
     }
     const data = await response.json();
     const repositories = data.items;
-    repositories.sort((a, b) => b.stargazers_count - a.stargazers_count);
+    let topTen = repositories.sort(
+      (a, b) => b.stargazers_count - a.stargazers_count,
+    );
+    topTen = topTen.slice(0, 10);
     if (repositories.length === 0) {
       console.log("No repositories found");
       return;
     }
 
-    repositories.forEach((repo, index) => {
+    topTen.forEach((repo, index) => {
       console.log(`${index + 1}. ${repo.full_name}`);
       console.log(`⭐ ${repo.stargazers_count}`);
       console.log(repo.html_url);
