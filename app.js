@@ -98,4 +98,14 @@ if (toDate && !isValidDate(toDate)) {
   process.exit(1);
 }
 
+if (fromDate && toDate) {
+  const startDate = new Date(fromDate);
+  const endDate = new Date(toDate);
+
+  if (startDate > endDate) {
+    console.log("fromDate must be before toDate");
+    process.exit(1);
+  }
+}
+
 getRepositories(searchTerm);
