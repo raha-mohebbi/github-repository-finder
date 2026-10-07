@@ -61,4 +61,14 @@ if ((!fromDate && toDate) || (fromDate && !toDate)) {
   process.exit(1);
 }
 
+if (fromDate && !/^\d{4}-\d{2}-\d{2}$/.test(fromDate)) {
+  console.log("Invalid fromDate format");
+  process.exit(1);
+}
+
+if (toDate && !/^\d{4}-\d{2}-\d{2}$/.test(toDate)) {
+  console.log("Invalid toDate format");
+  process.exit(1);
+}
+
 getRepositories(searchTerm);
