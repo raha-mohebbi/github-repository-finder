@@ -1,3 +1,8 @@
+
+import chalk from "chalk";
+
+console.log(chalk.bold.green("GitHub Repository Finder"));
+
 const searchTerm = process.argv[2];
 const fromDate = process.argv[3];
 const toDate = process.argv[4];
@@ -22,7 +27,7 @@ async function getRepositories(searchTerm) {
     const repositories = data.items;
 
     if (repositories.length === 0) {
-      console.log("No repositories found");
+      console.log(chalk.yellow("No repositories found"));
       return;
     }
 
@@ -33,21 +38,40 @@ async function getRepositories(searchTerm) {
     topTen = topTen.slice(0, 10);
 
     topTen.forEach((repo, index) => {
-      console.log(`${index + 1}. ${repo.full_name}`);
-      console.log(`⭐ ${repo.stargazers_count}`);
+      console.log(
+        chalk.green(`${index + 1}. ${repo.full_name}`),
+      );
+
+      console.log(
+        chalk.yellow(`⭐ ${repo.stargazers_count}`),
+      );
 
       if (repo.description === null) {
-        console.log(`📝 No description available`);
+        console.log(
+          chalk.gray("📝 No description available"),
+        );
       } else {
-        console.log(`📝 ${repo.description}`);
+        console.log(
+          chalk.blue(`📝 ${repo.description}`),
+        );
       }
 
-      console.log(`💻 ${repo.language}`);
-      console.log(repo.html_url);
-      console.log("----------------");
+      console.log(
+        chalk.magenta(`💻 ${repo.language || "Unknown"}`),
+      );
+
+      console.log(
+        chalk.cyan(repo.html_url),
+      );
+
+      console.log(
+        chalk.gray("────────────────────────────"),
+      );
     });
   } catch (error) {
-    console.error("Error fetching repositories:", error.message);
+    console.error(
+      chalk.red(`Error fetching repositories: ${error.message}`),
+    );
   }
 }
 
@@ -69,32 +93,50 @@ function isValidDate(dateString) {
 }
 
 if (!searchTerm) {
-  console.log("Please provide a search term");
+  console.log(
+    chalk.red("Please provide a search term"),
+  );
+
   process.exit(1);
 }
 
 if ((!fromDate && toDate) || (fromDate && !toDate)) {
-  console.log("Please provide both fromDate and toDate");
+  console.log(
+    chalk.red("Please provide both fromDate and toDate"),
+  );
+
   process.exit(1);
 }
 
 if (fromDate && !/^\d{4}-\d{2}-\d{2}$/.test(fromDate)) {
-  console.log("Invalid fromDate format");
+  console.log(
+    chalk.red("Invalid fromDate format"),
+  );
+
   process.exit(1);
 }
 
 if (toDate && !/^\d{4}-\d{2}-\d{2}$/.test(toDate)) {
-  console.log("Invalid toDate format");
+  console.log(
+    chalk.red("Invalid toDate format"),
+  );
+
   process.exit(1);
 }
 
 if (fromDate && !isValidDate(fromDate)) {
-  console.log("Invalid fromDate");
+  console.log(
+    chalk.red("Invalid fromDate"),
+  );
+
   process.exit(1);
 }
 
 if (toDate && !isValidDate(toDate)) {
-  console.log("Invalid toDate");
+  console.log(
+    chalk.red("Invalid toDate"),
+  );
+
   process.exit(1);
 }
 
@@ -103,7 +145,10 @@ if (fromDate && toDate) {
   const endDate = new Date(toDate);
 
   if (startDate > endDate) {
-    console.log("fromDate must be before toDate");
+    console.log(
+      chalk.red("fromDate must be before toDate"),
+    );
+
     process.exit(1);
   }
 }
